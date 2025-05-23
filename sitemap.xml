@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
-    <loc>https://www.jeffthoensen.com/</loc>
+    <loc>https://www.jeffthoensen.com/medium-index-request.html</loc>
   </url>
+  <url>
+    <loc>https://www.jeffthoensen.com/substack-index-request.html</loc>
+  </url>
+  <url>
+    <loc>https://www.jeffthoensen.com/quora-index-request.html</loc>
+  </url>
+  <url>
+    <loc>https://www.jeffthoensen.com/aboutme-index-request.html</loc>
+  </url>
+  <url>
+    <loc>https://www.jeffthoensen.com/x-index-request.html</loc>
+  </url>
+  <url>
+    <loc>https://www.jeffthoensen.com/pinterest-index-request.html</loc>
+  </url>
+  <url>
+    <loc>https://www.jeffthoensen.com/gravatar-index-request.html</loc>
+  </url>
+  <url>
+    <loc>https://www.jeffthoensen.com/academia-index-request.html</loc>
+  </url>
+
 </urlset>
