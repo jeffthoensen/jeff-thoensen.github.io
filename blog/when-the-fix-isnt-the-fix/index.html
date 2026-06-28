@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When the Fix Works But Isn't the Fix | Jeff Thoensen</title>
+  <meta name="description" content="I added retry logic to a flaky Playwright suite and the tests went green. I thought I had fixed it. I hadn't.">
+  <meta name="author" content="Jeff Thoensen">
+  <link rel="canonical" href="https://jeffthoensen.com/blog/when-the-fix-isnt-the-fix/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="When the Fix Works But Isn't the Fix">
+  <meta property="og:description" content="I added retry logic to a flaky Playwright suite and the tests went green. I thought I had fixed it. I hadn't.">
+  <meta property="og:url" content="https://jeffthoensen.com/blog/when-the-fix-isnt-the-fix/">
+  <meta property="og:image" content="https://jeffthoensen.com/profile-pic.jpg">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="When the Fix Works But Isn't the Fix">
+  <meta name="twitter:description" content="I added retry logic to a flaky Playwright suite and the tests went green. I thought I had fixed it. I hadn't.">
+  <meta name="twitter:image" content="https://jeffthoensen.com/profile-pic.jpg">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;1,400&display=swap');
+
+    :root {
+      --bg: #0f1117;
+      --surface: #161b22;
+      --border: #21262d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-dim: #1f3a5f;
+      --code-bg: #161b22;
+      --code-border: #30363d;
+      --green: #3fb950;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 2rem 1.25rem;
+    }
+
+    .site-nav {
+      max-width: 720px;
+      margin: 0 auto 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    .site-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .site-nav a:hover { color: var(--accent); }
+    .site-nav .home { color: var(--accent); font-weight: 600; letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 1.5rem; }
+
+    article { max-width: 720px; margin: 0 auto; }
+
+    .meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .meta .tag { color: var(--green); }
+
+    h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 500;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .deck {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 2.5rem 0 1rem;
+    }
+
+    p { margin-bottom: 1.25rem; font-size: 1rem; }
+
+    code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85em;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      color: #79c0ff;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+      font-size: inherit;
+    }
+
+    .comment { color: var(--text-muted); }
+    .keyword { color: #ff7b72; }
+    .string { color: #a5d6ff; }
+    .property { color: #79c0ff; }
+    .value { color: #3fb950; }
+
+    .callout {
+      background: var(--accent-dim);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1.75rem 0;
+      font-size: 0.95rem;
+    }
+
+    .callout strong {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .bio {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .bio a { color: var(--accent); text-decoration: none; }
+    .bio a:hover { text-decoration: underline; }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "When the Fix Works But Isn't the Fix",
+    "author": {
+      "@type": "Person",
+      "name": "Jeff Thoensen",
+      "@id": "https://jeffthoensen.com/#jeff"
+    },
+    "url": "https://jeffthoensen.com/blog/when-the-fix-isnt-the-fix/",
+    "publisher": {
+      "@type": "Person",
+      "name": "Jeff Thoensen",
+      "url": "https://jeffthoensen.com"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="https://jeffthoensen.com" class="home">jeffthoensen.com</a>
+    <div class="nav-links">
+      <a href="https://jeffthoensen.com/about/">About</a>
+      <a href="https://jeffthoensen.com/writing/">Writing</a>
+      <a href="https://jeffthoensen.com/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <article>
+
+    <div class="meta">
+      <span>Jeff Thoensen</span>
+      <span class="tag">Playwright</span>
+      <span class="tag">LiveView</span>
+      <span class="tag">QA Automation</span>
+    </div>
+
+    <h1>When the Fix Works But Isn't the Fix</h1>
+
+    <p class="deck">I added retry logic to a flaky Playwright suite and the tests went green. I thought that was the end of it. It wasn't.</p>
+
+    <h2>What Happened</h2>
+
+    <p>I set up an E2E suite from scratch with Playwright, and after a while the overnight runs started failing. I traced it back to a readiness helper that waits for Phoenix LiveView to signal a connected state before tests proceed. The fix seemed straightforward... add a retry option, reload the page if the check timed out, and move on. Tests went green, overnight runs stabilized, and I thought that was the end of it.</p>
+
+    <p>What was actually happening: during a navigation remount, LiveView briefly drops and re-establishes its connection, and the readiness helper was catching the connected signal at the wrong moment, losing it during remount, and timing out. The page reload was giving LiveView enough time to finish reconnecting, so the retry looked like a real fix. The race condition was still there the whole time, just quiet.</p>
+
+    <p>A probe later showed the retry firing on pages that were already fully connected, which meant the reloads weren't recovering from anything. They were covering a timing bug that the suite had never actually diagnosed.</p>
+
+    <h2>Before and After</h2>
+
+    <p>Every test call that looked like this...</p>
+
+    <pre><code><span class="keyword">await</span> <span class="property">waitForLiveView</span>(page, { <span class="property">retryWithReload</span>: <span class="value">true</span> });</code></pre>
+
+    <p>...was eventually replaced with this:</p>
+
+    <pre><code><span class="keyword">await</span> <span class="property">waitForLiveView</span>(page);</code></pre>
+
+    <p>The retry option came out of the helper entirely, and the suite ran clean with zero retries and nothing hiding underneath it. The real fix was a scoped readiness gate that handles remounts correctly. Once that landed, the workaround had nothing left to do.</p>
+
+    <h2>Why This Is Easy to Do in Playwright</h2>
+
+    <p>Playwright is forgiving by design... auto-waiting, actionability checks, built-in retry on assertions. These features are genuinely useful, and they also make it possible to write tests that pass without fully understanding why. A test can succeed for the wrong reason, and if the run is green, you'll take it.</p>
+
+    <p>The same applies to any retry or recovery mechanism in test infrastructure. If a flaky test stabilizes after you add a wait or a reload, that's not necessarily a fix. The instability may still be there, just quiet, and the next person to look at that code will have no idea what it's actually doing or why it was ever needed.</p>
+
+    <p>The tell is when you're adding recovery logic without being able to name the exact failure mode it solves. I knew the tests were timing out, but I didn't know why. The reload fixed the symptom and I stopped digging, which felt fine at the time because the suite was green and there were other things to do.</p>
+
+    <h2>What Would Have Surfaced This Earlier</h2>
+
+    <p>Logging when retry logic fires is one thing... if a recovery mechanism is triggering on pages that have no reason to need recovery, that's worth knowing, and silent retries hide that information.</p>
+
+    <p>It's also worth understanding what a readiness check is actually measuring. In this case it was a CSS class, which is a proxy for connection state rather than a direct measure of it, and proxies can be wrong during transitions in ways that aren't obvious until you go looking.</p>
+
+    <div class="callout">
+      <strong>The general pattern</strong>
+      When a flaky test stabilizes after a workaround, treat it as a pause rather than a resolution. The question worth answering is what was actually happening before the workaround covered it up.
+    </div>
+
+    <p>More on building Playwright suites against framework-specific apps at <a href="https://jeffthoensen.com/blog/playwright-liveview-navigation-timeouts/">Testing a LiveView App with Playwright: Fixing Navigation Timeouts</a>, and more generally at <a href="https://jeffthoensen.com">jeffthoensen.com</a>.</p>
+
+    <div class="bio">
+      Jeff Thoensen is a Context-Driven QA Engineer focused on automation, API testing, and exploratory testing. Find more at <a href="https://jeffthoensen.com">jeffthoensen.com</a>
+    </div>
+
+  </article>
+
+</body>
+</html>
