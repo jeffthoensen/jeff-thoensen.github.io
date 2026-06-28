@@ -221,7 +221,7 @@
 
     <p>I set up an E2E suite from scratch with Playwright, and after a while the overnight runs started failing. I traced it back to a readiness helper that waits for Phoenix LiveView to signal a connected state before tests proceed. The fix seemed straightforward... add a retry option, reload the page if the check timed out, and move on. Tests went green, overnight runs stabilized, and I thought that was the end of it.</p>
 
-    <p>What was actually happening: during a navigation remount, LiveView briefly drops and re-establishes its connection, and the readiness helper was catching the connected signal at the wrong moment, losing it during remount, and timing out. The page reload was giving LiveView enough time to finish reconnecting, so the retry looked like a real fix. The race condition was still there the whole time, just quiet.</p>
+    <p>What was actually happening: during a navigation remount, LiveView briefly drops and re-establishes its connection, and the readiness helper was catching the connected signal at the wrong moment, losing it during remount, and timing out. The page reload was giving LiveView enough time to finish reconnecting, so the retry looked like a real fix. The race condition was still there the whole time.</p>
 
     <p>A probe later showed the retry firing on pages that were already fully connected, which meant the reloads weren't recovering from anything. They were covering a timing bug that the suite had never actually diagnosed.</p>
 
@@ -241,7 +241,7 @@
 
     <p>Playwright is forgiving by design... auto-waiting, actionability checks, built-in retry on assertions. These features are genuinely useful, and they also make it possible to write tests that pass without fully understanding why. A test can succeed for the wrong reason, and if the run is green, you'll take it.</p>
 
-    <p>The same applies to any retry or recovery mechanism in test infrastructure. If a flaky test stabilizes after you add a wait or a reload, that's not necessarily a fix. The instability may still be there, just quiet, and the next person to look at that code will have no idea what it's actually doing or why it was ever needed.</p>
+    <p>The same applies to any retry or recovery mechanism in test infrastructure. If a flaky test stabilizes after you add a wait or a reload, that's not necessarily a fix. The instability may still be there, and the next person to look at that code will have no idea what it's actually doing or why it was ever needed.</p>
 
     <p>The tell is when you're adding recovery logic without being able to name the exact failure mode it solves. I knew the tests were timing out, but I didn't know why. The reload fixed the symptom and I stopped digging, which felt fine at the time because the suite was green and there were other things to do.</p>
 
