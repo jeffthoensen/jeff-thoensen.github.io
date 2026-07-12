@@ -23,44 +23,64 @@
   <meta name="twitter:description" content="Additional professional profiles for Jeff Thoensen.">
   <meta name="twitter:image" content="https://jeffthoensen.com/profile-pic.jpg">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
+    :root {
+      --bg: #0f1215;
+      --text: #e7e5df;
+      --text-dim: #8a8f94;
+      --accent: #3e8e7e;
+      --border: #23282c;
+    }
+    * { box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background-color: #1a1a1a;
-      color: #f0f0f0;
-      margin: 0;
-      padding: 2rem;
-      text-align: center;
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
     }
-    a {
-      display: inline-block;
-      margin: 0.3rem 0;
-      padding: 0.6rem 1.2rem;
-      color: #ffffff;
-      background-color: #007acc;
+    a { color: var(--accent); }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .back { display: inline-block; margin-bottom: 2rem; color: var(--text-dim); font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; text-decoration: none; }
+    .back:hover { color: var(--text); }
+    h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 2rem; margin: 0 0 0.5rem; }
+    p.note { color: var(--text-dim); margin: 0 0 2rem; }
+    .links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem 1.5rem;
+      font-size: 1rem;
+    }
+    .links a {
       text-decoration: none;
-      border-radius: 5px;
-      transition: background 0.3s;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.15rem;
     }
-    a:hover { background-color: #005f99; }
-    h1 { font-size: 2.4rem; margin: 0 0 1rem; }
-    p  { font-size: 1.05rem; margin: 0 0 1.2rem; }
-    .link-stack {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 1.2rem;
+    .links a:hover { color: var(--accent); border-color: var(--accent); }
+    @media (max-width: 420px) {
+      .links { grid-template-columns: 1fr; }
     }
-    .link-stack a { width: 260px; }
   </style>
 </head>
 <body>
-  <a href="/">← Home</a>
+  <a href="/" class="back">← Home</a>
   <h1>More Profiles</h1>
-  <p>Additional places to find me (kept here to keep the homepage clean).</p>
+  <p class="note">GitHub, LinkedIn, and Medium are on the homepage. Everything else is here.</p>
 
-  <div class="link-stack">
+  <div class="links">
+    <a href="https://dev.to/jeffthoensen" target="_blank" rel="noopener">DEV.to</a>
+    <a href="https://jeffthoensen.substack.com" target="_blank" rel="noopener">Substack</a>
+    <a href="https://hashnode.com/@jeffthoensen" target="_blank" rel="noopener">Hashnode</a>
+    <a href="https://www.kaggle.com/jeffthoensen" target="_blank" rel="noopener">Kaggle</a>
+    <a href="https://wellfound.com/u/jeff-thoensen" target="_blank" rel="noopener">Wellfound</a>
+    <a href="https://peerlist.io/jeffthoensen" target="_blank" rel="noopener">Peerlist</a>
+    <a href="https://stackoverflow.com/users/30687002/jeff-thoensen" target="_blank" rel="noopener">Stack Overflow</a>
     <a href="https://x.com/jeffthoensen" target="_blank" rel="noopener">X</a>
     <a href="https://about.me/jeff-thoensen/" target="_blank" rel="noopener">About.me</a>
     <a href="https://www.quora.com/profile/Jeff-Thoensen-1/" target="_blank" rel="noopener">Quora</a>
