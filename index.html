@@ -4,86 +4,184 @@
   <meta charset="UTF-8">
   <meta name="google-site-verification" content="bylg9WdaWBCbjaGL2laR1F6l-6ySnMazpcJVgosilXY">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Jeff Thoensen, Context-Driven Quality Assurance Engineer with strong automation, API, and exploratory testing skills.">
-  <meta name="keywords" content="Jeff Thoensen, QA Engineer, Context-Driven Testing, Manual Testing, API Testing, Automation, Playwright, JavaScript, TypeScript, Python, GitHub, LinkedIn, Medium, Substack, DEV.to, Hashnode">
+  <meta name="description" content="Jeff Thoensen, Automation Engineer building test automation, tooling, and AI-assisted systems for stable software releases.">
+  <meta name="keywords" content="Jeff Thoensen, Automation Engineer, QA Engineer, Context-Driven Testing, API Testing, Automation, Playwright, AI-assisted testing, JavaScript, TypeScript, Python, GitHub, LinkedIn, Medium, Substack, DEV.to, Hashnode">
   <meta name="author" content="Jeff Thoensen">
-  <title>Jeff Thoensen, Context-Driven QA Engineer</title>
+  <title>Jeff Thoensen · Automation Engineer</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="canonical" href="https://jeffthoensen.com/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Jeff Thoensen, Context-Driven QA Engineer">
-  <meta property="og:description" content="QA focused on real user impact, automation that matters, and stable releases.">
+  <meta property="og:title" content="Jeff Thoensen · Automation Engineer">
+  <meta property="og:description" content="Automation, tooling, and AI-assisted systems that keep releases stable.">
   <meta property="og:url" content="https://jeffthoensen.com/">
   <meta property="og:image" content="https://jeffthoensen.com/profile-pic.jpg">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Jeff Thoensen, Context-Driven QA Engineer">
-  <meta name="twitter:description" content="QA focused on real user impact, automation that matters, and stable releases.">
+  <meta name="twitter:title" content="Jeff Thoensen · Automation Engineer">
+  <meta name="twitter:description" content="Automation, tooling, and AI-assisted systems that keep releases stable.">
   <meta name="twitter:image" content="https://jeffthoensen.com/profile-pic.jpg">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
+    :root {
+      --bg: #0f1215;
+      --text: #e7e5df;
+      --text-dim: #8a8f94;
+      --accent: #3e8e7e;
+      --border: #23282c;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #1a1a1a;
-      color: #f0f0f0;
+      background: var(--bg);
+      color: var(--text);
       margin: 0;
-      padding: 2rem;
-      text-align: center;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
+
+    a { color: inherit; }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    main {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
     }
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
-    a {
-      display: inline-block;
-      margin: 0.3rem 0;
-      padding: 0.6rem 1.2rem;
-      color: #ffffff;
-      background-color: #007acc;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-    a:hover {
-      background-color: #005f99;
-    }
-    .profile-pic {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      margin: 1rem auto;
-      object-fit: cover;
-    }
-    .link-stack {
+
+    nav.top {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 1.5rem;
+      justify-content: flex-end;
+      gap: 1.25rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-bottom: 3rem;
     }
-    .link-stack a {
-      width: 220px;
+
+    nav.top a { text-decoration: none; }
+    nav.top a:hover { color: var(--text); }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 0.35rem;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 2.4rem;
+      line-height: 1.1;
+      margin: 0;
+    }
+
+    .lede {
+      font-size: 1.05rem;
+      color: var(--text);
+      margin: 0 0 3rem;
+    }
+
+    .lede + .lede { margin-top: -2rem; }
+
+    section { margin-bottom: 2.5rem; }
+
+    .label {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin: 0 0 1rem;
+    }
+
+    .label .rule {
+      width: 3px;
+      height: 0.85rem;
+      background: var(--accent);
+      display: inline-block;
+    }
+
+    .post-link {
+      display: block;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1rem 1.15rem;
+      transition: border-color 0.15s ease;
+    }
+
+    .post-link:hover { border-color: var(--accent); }
+
+    .post-title {
+      display: block;
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .post-desc {
+      display: block;
+      color: var(--text-dim);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .elsewhere-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.5rem;
+      font-size: 0.98rem;
+    }
+
+    .elsewhere-links a { text-decoration: none; border-bottom: 1px solid var(--border); }
+    .elsewhere-links a:hover { border-color: var(--accent); color: var(--accent); }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.9rem; }
+      .hero { gap: 1rem; }
+      .avatar { width: 56px; height: 56px; }
     }
   </style>
 
-  <!-- Schema Markup (updated) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "@id": "https://jeffthoensen.com/#jeff",
     "name": "Jeff Thoensen",
-    "description": "Context-Driven Quality Assurance Engineer specializing in automation, API testing, and exploratory testing.",
+    "description": "Automation Engineer focused on test automation, tooling, and AI-assisted systems for stable software releases.",
     "url": "https://jeffthoensen.com/",
     "image": "https://jeffthoensen.com/profile-pic.jpg",
-    "jobTitle": "Quality Assurance Engineer",
+    "jobTitle": "Automation Engineer",
     "sameAs": [
       "https://www.linkedin.com/in/jeffthoensen/",
       "https://github.com/jeffthoensen",
@@ -103,26 +201,41 @@
   </script>
 </head>
 <body>
-  <h1>Jeff Thoensen</h1>
-  <img src="profile-pic.jpg" alt="Jeff Thoensen profile picture" class="profile-pic">
-  <p>I’m a context-driven Quality Assurance Engineer (automation, API, and exploratory testing).</p>
+  <main>
+    <nav class="top">
+      <a href="/about/">About</a>
+      <a href="/writing/">Writing</a>
+      <a href="/blog/">Blog</a>
+    </nav>
 
-  <div class="link-stack">
-    <p>Connect with me:</p>
-    <a href="/about/">About</a>
-    <a href="/writing/">Writing</a>
-    <a href="/blog/">Blog</a>
-    <a href="https://www.linkedin.com/in/jeffthoensen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-    <a href="https://github.com/jeffthoensen" target="_blank" rel="noopener noreferrer">GitHub</a>
-    <a href="https://dev.to/jeffthoensen" target="_blank" rel="noopener noreferrer">DEV.to</a>
-    <a href="https://jeff-thoensen.medium.com" target="_blank" rel="noopener noreferrer">Medium</a>
-    <a href="https://jeffthoensen.substack.com" target="_blank" rel="noopener noreferrer">Substack</a>
-    <a href="https://hashnode.com/@jeffthoensen" target="_blank" rel="noopener noreferrer">Hashnode</a>
-    <a href="/kaggle.html">Kaggle</a>
-    <a href="/wellfound.html">Wellfound</a>
-    <a href="/peerlist.html">Peerlist</a>
-    <a href="https://stackoverflow.com/users/30687002/jeff-thoensen" target="_blank" rel="noopener noreferrer">Stack Overflow</a>
-    <a href="/more-profiles.html">More Profiles</a>
-  </div>
+    <div class="hero">
+      <img src="profile-pic.jpg" alt="Jeff Thoensen" class="avatar">
+      <div>
+        <p class="eyebrow">Automation Engineer</p>
+        <h1>Jeff Thoensen</h1>
+      </div>
+    </div>
+
+    <p class="lede">I build test automation and the tooling around it: CI pipelines, Playwright suites, exploratory testing, the systems that keep releases stable.</p>
+    <p class="lede">Lately that includes AI-assisted tooling, scripts and workflows that cut manual work out of testing and release processes.</p>
+
+    <section>
+      <h2 class="label"><span class="rule"></span>Recent</h2>
+      <a class="post-link" href="/blog/when-the-fix-isnt-the-fix/">
+        <span class="post-title">When the Fix Works But Isn't the Fix</span>
+        <span class="post-desc">I added retry logic to a flaky Playwright suite and the tests went green. I thought I had fixed it. I hadn't.</span>
+      </a>
+    </section>
+
+    <section>
+      <h2 class="label"><span class="rule"></span>Elsewhere</h2>
+      <div class="elsewhere-links">
+        <a href="https://github.com/jeffthoensen" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/in/jeffthoensen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://jeff-thoensen.medium.com" target="_blank" rel="noopener noreferrer">Medium</a>
+        <a href="/more-profiles.html">More →</a>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
