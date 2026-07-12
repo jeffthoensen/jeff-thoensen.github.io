@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <title>About Jeff Thoensen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="About Jeff Thoensen, context-driven QA engineer focused on mitigating risk through automation and exploratory testing.">
+  <meta name="description" content="About Jeff Thoensen, Automation Engineer building test automation, tooling, and AI-assisted systems for stable releases.">
   <link rel="canonical" href="https://jeffthoensen.com/about/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="profile">
   <meta property="og:title" content="About Jeff Thoensen">
-  <meta property="og:description" content="Context-driven QA, Playwright, CI, and exploratory testing with focus on risk mitigation.">
+  <meta property="og:description" content="Automation, tooling, CI, and AI-assisted testing with a focus on stable releases.">
   <meta property="og:url" content="https://jeffthoensen.com/about/">
   <meta property="og:image" content="https://jeffthoensen.com/profile-pic.jpg">
   <meta property="profile:first_name" content="Jeff">
@@ -19,20 +19,47 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="About Jeff Thoensen">
-  <meta name="twitter:description" content="Context-driven QA, Playwright, CI, and exploratory testing with focus on risk mitigation.">
+  <meta name="twitter:description" content="Automation, tooling, CI, and AI-assisted testing with a focus on stable releases.">
   <meta name="twitter:image" content="https://jeffthoensen.com/profile-pic.jpg">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
-    body { max-width: 760px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:#eaeaea; background:#111; }
-    a { color:#4ea3ff; }
-    h1 { line-height:1.2; margin: 0 0 1rem; }
-    .meta { color:#aaa; margin-bottom: 1.25rem; }
-    img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; }
-    header { display:flex; align-items:center; gap:1rem; margin-bottom:1rem; }
-    footer { margin-top:2rem; border-top:1px solid #333; padding-top:1rem; }
+    :root {
+      --bg: #0f1215;
+      --text: #e7e5df;
+      --text-dim: #8a8f94;
+      --accent: #3e8e7e;
+      --border: #23282c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .back { display: inline-block; margin-bottom: 2rem; color: var(--text-dim); font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; }
+    .back:hover { color: var(--text); }
+    h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 2rem; line-height: 1.15; margin: 0 0 0.5rem; }
+    .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.4rem; }
+    header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem; }
+    img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    p { margin: 0 0 1.1rem; }
+    footer { margin-top: 2.5rem; border-top: 1px solid var(--border); padding-top: 1.25rem; font-size: 0.95rem; }
+    footer strong { font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); display: block; margin-bottom: 0.6rem; }
+    footer a { color: var(--text); border-bottom: 1px solid var(--border); }
+    footer a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
   </style>
 
-  <!-- Updated Schema Markup -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -41,11 +68,11 @@
     "name":"Jeff Thoensen",
     "url":"https://jeffthoensen.com/",
     "image":"https://jeffthoensen.com/profile-pic.jpg",
-    "jobTitle":"Quality Assurance Engineer",
-    "description":"Context-driven QA focused on mitigating risk through automation and exploratory testing.",
+    "jobTitle":"Automation Engineer",
+    "description":"Automation Engineer focused on test automation, tooling, and AI-assisted systems for stable software releases.",
     "sameAs":[
       "https://www.linkedin.com/in/jeffthoensen/",
-      "https://github.com/jeff-thoensen",
+      "https://github.com/jeffthoensen",
       "https://dev.to/jeffthoensen",
       "https://jeff-thoensen.medium.com",
       "https://jeffthoensen.substack.com",
@@ -59,23 +86,23 @@
   </script>
 </head>
 <body>
-  <a href="/">← Home</a>
+  <a href="/" class="back">← Home</a>
   <header>
     <img src="/profile-pic.jpg" alt="Jeff Thoensen">
     <div>
-      <h1>About Jeff Thoensen</h1>
-      <div class="meta">QA engineer, context-driven testing, Playwright, CI, and exploratory work</div>
+      <p class="eyebrow">Automation Engineer</p>
+      <h1>About</h1>
     </div>
   </header>
 
-  <p>I work in QA with a focus on mitigating risk. I write Playwright tests where they help, wire them into CI, and spend most of my time exploring the product to catch problems early. I keep suites small and maintain the code with reviews and refactors.</p>
+  <p>I build automation and the tooling around it. That started in QA: Playwright suites wired into CI, exploratory testing to catch what the suites miss, and enough discipline to keep both maintainable. It's grown from there into building the systems and tools that testing depends on, not just the tests themselves.</p>
 
-  <p>Most of my work is in JavaScript and TypeScript, with some Python. Tools I use often are Playwright, GitHub Actions, and Allure.</p>
+  <p>Most of my work is in JavaScript and TypeScript, with some Python. Tools I reach for often are Playwright, GitHub Actions, and Allure. Lately that list includes AI-assisted tooling, using models to write and maintain automation faster and to take on the parts of testing that don't need a human in the loop.</p>
 
-  <p><strong>Recent post:</strong> <a href="/blog/dont-automate-everything/">Don't automate everything</a></p>
+  <p><strong>Recent post:</strong> <a href="/blog/when-the-fix-isnt-the-fix/">When the Fix Works But Isn't the Fix</a></p>
 
   <footer>
-    <strong>Connect with me</strong>:
+    <strong>Connect</strong>
     <a href="https://www.linkedin.com/in/jeffthoensen/">LinkedIn</a> ·
     <a href="https://github.com/jeffthoensen">GitHub</a> ·
     <a href="https://dev.to/jeffthoensen">DEV.to</a> ·
