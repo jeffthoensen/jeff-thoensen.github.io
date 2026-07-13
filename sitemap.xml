@@ -4,16 +4,8 @@
   <url><loc>https://jeffthoensen.com/about/</loc></url>
   <url><loc>https://jeffthoensen.com/blog/</loc></url>
   <url><loc>https://jeffthoensen.com/blog/dont-automate-everything/</loc></url>
+  <url><loc>https://jeffthoensen.com/blog/playwright-liveview-navigation-timeouts/</loc></url>
+  <url><loc>https://jeffthoensen.com/blog/when-the-fix-isnt-the-fix/</loc></url>
   <url><loc>https://jeffthoensen.com/more-profiles.html</loc></url>
   <url><loc>https://jeffthoensen.com/writing/</loc></url>
-
-  <!-- optional helpers I already had -->
-  <url><loc>https://jeffthoensen.com/medium-index-request.html</loc></url>
-  <url><loc>https://jeffthoensen.com/substack-index-request.html</loc></url>
-  <url><loc>https://jeffthoensen.com/quora-index-request.html</loc></url>
-  <url><loc>https://jeffthoensen.com/aboutme-index-request.html</loc></url>
-  <url><loc>https://jeffthoensen.com/x-index-request.html</loc></url>
-  <url><loc>https://jeffthoensen.com/pinterest-index-request.html</loc></url>
-  <url><loc>https://jeffthoensen.com/gravatar-index-request.html</loc></url>
-  <url><loc>https://jeffthoensen.com/academia-index-request.html</loc></url>
 </urlset>
