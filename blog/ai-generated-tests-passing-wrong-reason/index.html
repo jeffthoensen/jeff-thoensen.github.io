@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Why My AI-Generated Tests Kept Passing for the Wrong Reason · Jeff Thoensen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An AI-generated Playwright test passed every time, but it only checked what the page reported, not what the backend actually did.">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://jeffthoensen.com/blog/ai-generated-tests-passing-wrong-reason/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Why My AI-Generated Tests Kept Passing for the Wrong Reason · Jeff Thoensen">
+  <meta property="og:description" content="An AI-generated Playwright test passed every time, but it only checked what the page reported, not what the backend actually did.">
+  <meta property="og:url" content="https://jeffthoensen.com/blog/ai-generated-tests-passing-wrong-reason/">
+  <meta property="og:site_name" content="Jeff Thoensen">
+  <meta property="og:image" content="https://jeffthoensen.com/profile-pic.jpg">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Why My AI-Generated Tests Kept Passing for the Wrong Reason · Jeff Thoensen">
+  <meta name="twitter:description" content="An AI-generated Playwright test passed every time, but it only checked what the page reported, not what the backend actually did.">
+  <meta name="twitter:image" content="https://jeffthoensen.com/profile-pic.jpg">
+
+  <style>
+    body { max-width: 720px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #eaeaea; background:#111; }
+    a { color:#4ea3ff; }
+    h1 { line-height:1.2; margin: 0 0 1rem; }
+    .meta { color:#aaa; margin-bottom:1.5rem; }
+    pre { background:#1a1a1a; border:1px solid #333; border-radius:4px; padding:1rem; overflow-x:auto; font-size:0.9rem; }
+    code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+    footer { margin-top:2rem; border-top:1px solid #333; padding-top:1rem; }
+  </style>
+
+  <!-- Schema: Person + Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://jeffthoensen.com/#jeff",
+        "name": "Jeff Thoensen",
+        "url": "https://jeffthoensen.com/",
+        "image": "https://jeffthoensen.com/profile-pic.jpg",
+        "jobTitle": "Automation Engineer",
+        "sameAs": [
+          "https://www.linkedin.com/in/jeffthoensen/",
+          "https://github.com/jeffthoensen",
+          "https://dev.to/jeffthoensen",
+          "https://jeff-thoensen.medium.com",
+          "https://jeffthoensen.substack.com",
+          "https://hashnode.com/@jeffthoensen",
+          "https://x.com/jeffthoensen",
+          "https://www.kaggle.com/jeffthoensen",
+          "https://wellfound.com/u/jeff-thoensen",
+          "https://peerlist.io/jeffthoensen",
+          "https://www.crunchbase.com/person/jeff-thoensen-02b2",
+          "https://www.producthunt.com/@jeffthoensen",
+          "https://jeffthoensen.notion.site/"
+        ]
+      },
+      {
+        "@type": "Article",
+        "headline": "Why My AI-Generated Tests Kept Passing for the Wrong Reason",
+        "author": { "@id": "https://jeffthoensen.com/#jeff" },
+        "datePublished": "2026-07-14",
+        "dateModified": "2026-07-14",
+        "mainEntityOfPage": "https://jeffthoensen.com/blog/ai-generated-tests-passing-wrong-reason/",
+        "publisher": { "@id": "https://jeffthoensen.com/#jeff" },
+        "image": "https://jeffthoensen.com/profile-pic.jpg",
+        "description": "An AI-generated Playwright test passed every time, but it only checked what the page reported, not what the backend actually did."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="/">← Home</a>
+  <h1>Why My AI-Generated Tests Kept Passing for the Wrong Reason</h1>
+  <div class="meta">by Jeff Thoensen</div>
+
+  <p>I started using AI to generate Playwright test scaffolding a few months ago. Feed it a user flow, whether it's a login form or a multi-step checkout, and you get back a working spec in under a minute that runs and mostly passes on the first try. The trouble shows up later, when a test passes for the wrong reason.</p>
+
+  <p>I asked a model to write a test for a password reset flow, and it built a spec that filled in the email field, clicked submit, and checked for a success message on screen. That passed every time I ran it, but it never checked whether an email actually went out, whether the link inside it worked, or whether that same link still worked after being used once. The page reported success no matter what the backend did, so the test just checked the page's opinion of itself.</p>
+
+  <p>Before I touched it, the spec looked like this:</p>
+
+  <pre><code>await page.getByLabel('Email').fill(testUser.email);
+await page.getByRole('button', { name: 'Send reset link' }).click();
+await expect(page.getByText('Check your email')).toBeVisible();</code></pre>
+
+  <p>All three lines passed, which is exactly the problem: none of them checked anything that actually mattered. Once I rewrote the assertions, it looked like this:</p>
+
+  <pre><code>await page.getByLabel('Email').fill(testUser.email);
+await page.getByRole('button', { name: 'Send reset link' }).click();
+await expect(page.getByText('Check your email')).toBeVisible();
+
+const resetEmail = await getLatestEmail(testUser.email);
+const token = extractResetToken(resetEmail.body);
+
+await page.goto(`/reset?token=${token}`);
+await page.getByLabel('New password').fill('NewPassword123!');
+await page.getByRole('button', { name: 'Reset password' }).click();
+await expect(page).toHaveURL('/login');
+
+await page.goto(`/reset?token=${token}`);
+await expect(page.getByText('This link has expired')).toBeVisible();</code></pre>
+
+  <p>The expired-token check at the end is what caught a real bug: the first version of the reset endpoint let a token be reused as many times as someone wanted, with no expiration after it was used once.</p>
+
+  <p>None of this makes AI bad at writing tests. It's good at the boilerplate, at generating locators and shaping a spec file enough that I'm editing instead of starting from nothing, but it can't decide which outcome the business actually depends on, because that context doesn't live in the DOM. A password reset link that never expires looks identical on screen to one that works the way it should, and the same gap shows up anywhere a UI can report success independent of what the backend actually did, checkout confirmations and invite emails included.</p>
+
+  <p>I still generate the first draft of most new specs with a model, but I rewrite the assertions myself, against what the feature is actually supposed to guarantee.</p>
+
+  <footer>
+    <strong>Also published on</strong>:
+    <a href="https://jeff-thoensen.medium.com">Medium</a> ·
+    <a href="https://dev.to/jeffthoensen">DEV.to</a> ·
+    <a href="https://jeffthoensen.substack.com">Substack</a> ·
+    <a href="https://hashnode.com/@jeffthoensen">Hashnode</a>
+    <br>
+    <strong>Connect with me</strong>:
+    <a href="https://jeffthoensen.com">jeffthoensen.com</a> ·
+    <a href="https://github.com/jeffthoensen">GitHub</a> ·
+    <a href="https://www.linkedin.com/in/jeffthoensen/">LinkedIn</a>
+  </footer>
+</body>
+</html>
