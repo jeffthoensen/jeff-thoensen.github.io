@@ -1,98 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Where Exploratory Testing Earns Its Keep · Jeff Thoensen</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Happy paths should be automated. Once that's done, here's specifically what's left for a person to do.">
-
-  <link rel="canonical" href="https://jeffthoensen.com/blog/what-a-test-plan-cant-tell-you/">
-
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Where Exploratory Testing Earns Its Keep · Jeff Thoensen">
-  <meta property="og:description" content="Happy paths should be automated. Once that's done, here's specifically what's left for a person to do.">
-  <meta property="og:url" content="https://jeffthoensen.com/blog/what-a-test-plan-cant-tell-you/">
-  <meta property="og:site_name" content="Jeff Thoensen">
-  <meta property="og:image" content="https://jeffthoensen.com/og-testing.png">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Where Exploratory Testing Earns Its Keep · Jeff Thoensen">
-  <meta name="twitter:description" content="Happy paths should be automated. Once that's done, here's specifically what's left for a person to do.">
-  <meta name="twitter:image" content="https://jeffthoensen.com/og-testing.png">
-
-  <style>
-    body { max-width: 720px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #eaeaea; background:#111; }
-    a { color:#4ea3ff; }
-    h1 { line-height:1.2; margin: 0 0 1rem; }
-    .meta { color:#aaa; margin-bottom:1.5rem; }
-    footer { margin-top:2rem; border-top:1px solid #333; padding-top:1rem; }
-  </style>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Person",
-        "@id": "https://jeffthoensen.com/#jeff",
-        "name": "Jeff Thoensen",
-        "url": "https://jeffthoensen.com/",
-        "image": "https://jeffthoensen.com/profile-pic.jpg",
-        "jobTitle": "Automation Engineer",
-        "sameAs": [
-          "https://bsky.app/profile/jeffthoensen.bsky.social",
-          "https://www.linkedin.com/in/jeffthoensen/",
-          "https://github.com/jeffthoensen",
-          "https://dev.to/jeffthoensen",
-          "https://jeff-thoensen.medium.com",
-          "https://jeffthoensen.substack.com",
-          "https://hashnode.com/@jeffthoensen",
-          "https://x.com/jeffthoensen",
-          "https://www.kaggle.com/jeffthoensen",
-          "https://wellfound.com/u/jeff-thoensen",
-          "https://peerlist.io/jeffthoensen",
-          "https://www.crunchbase.com/person/jeff-thoensen-02b2",
-          "https://www.producthunt.com/@jeffthoensen",
-          "https://jeffthoensen.notion.site/"
-        ]
-      },
-      {
-        "@type": "Article",
-        "headline": "Where Exploratory Testing Earns Its Keep",
-        "author": { "@id": "https://jeffthoensen.com/#jeff" },
-        "datePublished": "2026-07-15",
-        "dateModified": "2026-07-15",
-        "mainEntityOfPage": "https://jeffthoensen.com/blog/what-a-test-plan-cant-tell-you/",
-        "publisher": { "@id": "https://jeffthoensen.com/#jeff" },
-        "image": "https://jeffthoensen.com/og-testing.png",
-        "description": "Happy paths should be automated. Once that's done, here's specifically what's left for a person to do."
-      }
-    ]
-  }
-  </script>
+  <meta charset="UTF-8">
+  <title>Jeff Thoensen — Blog</title>
+  <meta http-equiv="refresh" content="0; url=https://jeffthoensen.com/blog/where-exploratory-testing-earns-its-keep/">
+  <link rel="canonical" href="https://jeffthoensen.com/blog/where-exploratory-testing-earns-its-keep/">
 </head>
 <body>
-  <a href="/">← Home</a>
-  <h1>Where Exploratory Testing Earns Its Keep</h1>
-  <div class="meta">by Jeff Thoensen</div>
-
-  <p>Happy paths should be automated, and that part isn't up for debate. A suite that runs the same core flows on every commit is what actually keeps a release stable, and there's no version of "we'll just check it manually before every deploy" that scales past a small team. Once that's in place, the interesting question isn't whether automation is worth it. It's what's actually left for a person to do once the obvious stuff already runs itself.</p>
-
-  <p>I keep a bulk-edit feature as the example I come back to. The automated suite covers selecting rows, editing a field, saving, and confirming the change. Green on every run, and it should stay that way. None of that is where I spend exploratory time, since it's already covered and covered well.</p>
-
-  <p>Where I actually spend time is the stuff nobody wrote an assertion for, because nobody thought to yet. I select a few hundred rows instead of a few, since that's closer to how someone treats a bulk-edit feature once they trust it. The save button spun and never resolved, with nothing in the UI to indicate anything had gone wrong. The backend had a request size limit that silently dropped the request past a few dozen rows.</p>
-
-  <p>That gap isn't a hole in the automated suite so much as the shape of what automation structurally can't reach on its own. A human has to imagine the scenario before anyone can write a test for it, and a scenario like selecting far more rows than the test data ever used isn't something you arrive at by making the existing suite more thorough. You arrive at it by using the feature the way someone under real conditions would, which usually means pushing past whatever amount the test data was written to cover.</p>
-
-  <p>The other place a person earns their keep is judgment calls automation can't make. A test can assert that a field shows an error message. It can't tell you the message is confusing, or that the error appears in a spot nobody would look, or that the flow technically works but takes four more clicks than it should. Those aren't failures a script can detect, since there's no clear pass or fail condition to assert on. Someone has to actually use the thing and notice.</p>
-
-  <p>I still treat the automated suite as the floor, not something exploratory testing is meant to replace or double-check. The floor is what keeps regressions from shipping. What a session is actually for is the edges nobody imagined yet, and the parts of the experience only a person can judge.</p>
-
-  <footer>
-    <strong>Connect with me</strong>:
-    <a href="https://jeffthoensen.com">jeffthoensen.com</a> ·
-    <a href="https://github.com/jeffthoensen">GitHub</a> ·
-    <a href="https://www.linkedin.com/in/jeffthoensen/">LinkedIn</a>
-  </footer>
+  <p>Moved to <a href="https://jeffthoensen.com/blog/where-exploratory-testing-earns-its-keep/">jeffthoensen.com/blog/where-exploratory-testing-earns-its-keep/</a>.</p>
 </body>
 </html>
