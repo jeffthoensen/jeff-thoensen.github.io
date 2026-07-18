@@ -2,22 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>What a Test Plan Can't Tell You · Jeff Thoensen</title>
+  <title>Where Exploratory Testing Earns Its Keep · Jeff Thoensen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A written test plan tells you a feature works the way it was specified. It doesn't tell you what happens when someone uses it the way people actually do.">
+  <meta name="description" content="Happy paths should be automated. Once that's done, here's specifically what's left for a person to do.">
 
   <link rel="canonical" href="https://jeffthoensen.com/blog/what-a-test-plan-cant-tell-you/">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="What a Test Plan Can't Tell You · Jeff Thoensen">
-  <meta property="og:description" content="A written test plan tells you a feature works the way it was specified. It doesn't tell you what happens when someone uses it the way people actually do.">
+  <meta property="og:title" content="Where Exploratory Testing Earns Its Keep · Jeff Thoensen">
+  <meta property="og:description" content="Happy paths should be automated. Once that's done, here's specifically what's left for a person to do.">
   <meta property="og:url" content="https://jeffthoensen.com/blog/what-a-test-plan-cant-tell-you/">
   <meta property="og:site_name" content="Jeff Thoensen">
   <meta property="og:image" content="https://jeffthoensen.com/og-testing.png">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="What a Test Plan Can't Tell You · Jeff Thoensen">
-  <meta name="twitter:description" content="A written test plan tells you a feature works the way it was specified. It doesn't tell you what happens when someone uses it the way people actually do.">
+  <meta name="twitter:title" content="Where Exploratory Testing Earns Its Keep · Jeff Thoensen">
+  <meta name="twitter:description" content="Happy paths should be automated. Once that's done, here's specifically what's left for a person to do.">
   <meta name="twitter:image" content="https://jeffthoensen.com/og-testing.png">
 
   <style>
@@ -58,14 +58,14 @@
       },
       {
         "@type": "Article",
-        "headline": "What a Test Plan Can't Tell You",
+        "headline": "Where Exploratory Testing Earns Its Keep",
         "author": { "@id": "https://jeffthoensen.com/#jeff" },
         "datePublished": "2026-07-15",
         "dateModified": "2026-07-15",
         "mainEntityOfPage": "https://jeffthoensen.com/blog/what-a-test-plan-cant-tell-you/",
         "publisher": { "@id": "https://jeffthoensen.com/#jeff" },
         "image": "https://jeffthoensen.com/og-testing.png",
-        "description": "A written test plan tells you a feature works the way it was specified. It doesn't tell you what happens when someone uses it the way people actually do."
+        "description": "Happy paths should be automated. Once that's done, here's specifically what's left for a person to do."
       }
     ]
   }
@@ -73,22 +73,20 @@
 </head>
 <body>
   <a href="/">← Home</a>
-  <h1>What a Test Plan Can't Tell You</h1>
+  <h1>Where Exploratory Testing Earns Its Keep</h1>
   <div class="meta">by Jeff Thoensen</div>
 
-  <p>A written test plan tells you a feature works the way it was specified. It doesn't tell you what happens when someone uses it the way people actually do, which is rarely the way it was specified.</p>
+  <p>Happy paths should be automated, and that part isn't up for debate. A suite that runs the same core flows on every commit is what actually keeps a release stable, and there's no version of "we'll just check it manually before every deploy" that scales past a small team. Once that's in place, the interesting question isn't whether automation is worth it. It's what's actually left for a person to do once the obvious stuff already runs itself.</p>
 
-  <p>I keep a bulk-edit feature as the example I come back to. The test plan covers selecting a few rows, editing a field, saving, and confirming the change. Every case passes. During an exploratory pass afterward, I select a few hundred rows instead of a few, because that's closer to how someone would actually use a bulk-edit feature once they trust it. The save button spins and never resolves. Nothing in the UI indicates anything went wrong. The backend had a request size limit that silently dropped the request past a few dozen rows.</p>
+  <p>I keep a bulk-edit feature as the example I come back to. The automated suite covers selecting rows, editing a field, saving, and confirming the change. Green on every run, and it should stay that way. None of that is where I spend exploratory time, since it's already covered and covered well.</p>
 
-  <p>None of that shows up in a plan written before anyone's touched the feature, because the plan describes intended behavior, and this bug only exists at the edges of what the feature was actually built to handle. Exploratory testing works by chasing those edges instead of confirming the middle.</p>
+  <p>Where I actually spend time is the stuff nobody wrote an assertion for, because nobody thought to yet. I select a few hundred rows instead of a few, since that's closer to how someone treats a bulk-edit feature once they trust it. The save button spun and never resolved, with nothing in the UI to indicate anything had gone wrong. The backend had a request size limit that silently dropped the request past a few dozen rows.</p>
 
-  <p>I still start most sessions with a written plan, since it catches the obvious regressions fast and gives me a baseline to compare against. What the plan misses is the stuff a real person would stumble into by accident: pasting in a value with a trailing space, refreshing mid-submit, opening the same record in two tabs, resizing a window while a modal is open. None of that is exotic. It's just outside what anyone thought to write down.</p>
+  <p>That gap isn't a hole in the automated suite so much as the shape of what automation structurally can't reach on its own. A human has to imagine the scenario before anyone can write a test for it, and a scenario like selecting far more rows than the test data ever used isn't something you arrive at by making the existing suite more thorough. You arrive at it by using the feature the way someone under real conditions would, which usually means pushing past whatever amount the test data was written to cover.</p>
 
-  <p>The way I run a session is time-boxed, usually thirty minutes, with a rough charter instead of a script. Something like "try to break the bulk-edit save path" is enough of a starting point. I take notes as I go, not after, since the interesting moments are usually small and easy to forget by the time the session ends: a spinner that took a beat too long, a field that reset itself after a validation error, a count that was off by one after a delete.</p>
+  <p>The other place a person earns their keep is judgment calls automation can't make. A test can assert that a field shows an error message. It can't tell you the message is confusing, or that the error appears in a spot nobody would look, or that the flow technically works but takes four more clicks than it should. Those aren't failures a script can detect, since there's no clear pass or fail condition to assert on. Someone has to actually use the thing and notice.</p>
 
-  <p>The bulk-edit bug was small in isolation, but it's the kind of bug that erodes trust in a product fast: the person hitting it has no idea anything failed, and just finds out later that their data isn't there.</p>
-
-  <p>I've had engineers ask why this needs a person at all, since a large enough automated suite should eventually hit the same edge cases through sheer volume. Sometimes it does, though an automated suite only tests what someone already thought to write an assertion for. A person poking around with intent finds the untested edges faster, and can follow a hunch the moment something looks slightly off.</p>
+  <p>I still treat the automated suite as the floor, not something exploratory testing is meant to replace or double-check. The floor is what keeps regressions from shipping. What a session is actually for is the edges nobody imagined yet, and the parts of the experience only a person can judge.</p>
 
   <footer>
     <strong>Connect with me</strong>:
