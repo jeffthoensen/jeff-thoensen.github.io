@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>What a Test Plan Can't Tell You · Jeff Thoensen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A written test plan tells you a feature works the way it was specified. It doesn't tell you what happens when someone uses it the way people actually do.">
+
+  <link rel="canonical" href="https://jeffthoensen.com/blog/what-a-test-plan-cant-tell-you/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="What a Test Plan Can't Tell You · Jeff Thoensen">
+  <meta property="og:description" content="A written test plan tells you a feature works the way it was specified. It doesn't tell you what happens when someone uses it the way people actually do.">
+  <meta property="og:url" content="https://jeffthoensen.com/blog/what-a-test-plan-cant-tell-you/">
+  <meta property="og:site_name" content="Jeff Thoensen">
+  <meta property="og:image" content="https://jeffthoensen.com/og-testing.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="What a Test Plan Can't Tell You · Jeff Thoensen">
+  <meta name="twitter:description" content="A written test plan tells you a feature works the way it was specified. It doesn't tell you what happens when someone uses it the way people actually do.">
+  <meta name="twitter:image" content="https://jeffthoensen.com/og-testing.png">
+
+  <style>
+    body { max-width: 720px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #eaeaea; background:#111; }
+    a { color:#4ea3ff; }
+    h1 { line-height:1.2; margin: 0 0 1rem; }
+    .meta { color:#aaa; margin-bottom:1.5rem; }
+    footer { margin-top:2rem; border-top:1px solid #333; padding-top:1rem; }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://jeffthoensen.com/#jeff",
+        "name": "Jeff Thoensen",
+        "url": "https://jeffthoensen.com/",
+        "image": "https://jeffthoensen.com/profile-pic.jpg",
+        "jobTitle": "Automation Engineer",
+        "sameAs": [
+          "https://bsky.app/profile/jeffthoensen.bsky.social",
+          "https://www.linkedin.com/in/jeffthoensen/",
+          "https://github.com/jeffthoensen",
+          "https://dev.to/jeffthoensen",
+          "https://jeff-thoensen.medium.com",
+          "https://jeffthoensen.substack.com",
+          "https://hashnode.com/@jeffthoensen",
+          "https://x.com/jeffthoensen",
+          "https://www.kaggle.com/jeffthoensen",
+          "https://wellfound.com/u/jeff-thoensen",
+          "https://peerlist.io/jeffthoensen",
+          "https://www.crunchbase.com/person/jeff-thoensen-02b2",
+          "https://www.producthunt.com/@jeffthoensen",
+          "https://jeffthoensen.notion.site/"
+        ]
+      },
+      {
+        "@type": "Article",
+        "headline": "What a Test Plan Can't Tell You",
+        "author": { "@id": "https://jeffthoensen.com/#jeff" },
+        "datePublished": "2026-07-15",
+        "dateModified": "2026-07-15",
+        "mainEntityOfPage": "https://jeffthoensen.com/blog/what-a-test-plan-cant-tell-you/",
+        "publisher": { "@id": "https://jeffthoensen.com/#jeff" },
+        "image": "https://jeffthoensen.com/og-testing.png",
+        "description": "A written test plan tells you a feature works the way it was specified. It doesn't tell you what happens when someone uses it the way people actually do."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="/">← Home</a>
+  <h1>What a Test Plan Can't Tell You</h1>
+  <div class="meta">by Jeff Thoensen</div>
+
+  <p>A written test plan tells you a feature works the way it was specified. It doesn't tell you what happens when someone uses it the way people actually do, which is rarely the way it was specified.</p>
+
+  <p>I keep a bulk-edit feature as the example I come back to. The test plan covers selecting a few rows, editing a field, saving, and confirming the change. Every case passes. During an exploratory pass afterward, I select a few hundred rows instead of a few, because that's closer to how someone would actually use a bulk-edit feature once they trust it. The save button spins and never resolves. Nothing in the UI indicates anything went wrong. The backend had a request size limit that silently dropped the request past a few dozen rows.</p>
+
+  <p>None of that shows up in a plan written before anyone's touched the feature, because the plan describes intended behavior, and this bug only exists at the edges of what the feature was actually built to handle. Exploratory testing works by chasing those edges instead of confirming the middle.</p>
+
+  <p>I still start most sessions with a written plan, since it catches the obvious regressions fast and gives me a baseline to compare against. What the plan misses is the stuff a real person would stumble into by accident: pasting in a value with a trailing space, refreshing mid-submit, opening the same record in two tabs, resizing a window while a modal is open. None of that is exotic. It's just outside what anyone thought to write down.</p>
+
+  <p>The way I run a session is time-boxed, usually thirty minutes, with a rough charter instead of a script. Something like "try to break the bulk-edit save path" is enough of a starting point. I take notes as I go, not after, since the interesting moments are usually small and easy to forget by the time the session ends: a spinner that took a beat too long, a field that reset itself after a validation error, a count that was off by one after a delete.</p>
+
+  <p>The bulk-edit bug was small in isolation, but it's the kind of bug that erodes trust in a product fast: the person hitting it has no idea anything failed, and just finds out later that their data isn't there.</p>
+
+  <p>I've had engineers ask why this needs a person at all, since a large enough automated suite should eventually hit the same edge cases through sheer volume. Sometimes it does, though an automated suite only tests what someone already thought to write an assertion for. A person poking around with intent finds the untested edges faster, and can follow a hunch the moment something looks slightly off.</p>
+
+  <footer>
+    <strong>Connect with me</strong>:
+    <a href="https://jeffthoensen.com">jeffthoensen.com</a> ·
+    <a href="https://github.com/jeffthoensen">GitHub</a> ·
+    <a href="https://www.linkedin.com/in/jeffthoensen/">LinkedIn</a>
+  </footer>
+</body>
+</html>
