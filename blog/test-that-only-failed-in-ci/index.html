@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Test That Only Failed in CI, Never Locally · Jeff Thoensen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Same code, same test. The only thing different was the timezone the two machines were running in.">
+
+  <link rel="canonical" href="https://jeffthoensen.com/blog/test-that-only-failed-in-ci/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="The Test That Only Failed in CI, Never Locally · Jeff Thoensen">
+  <meta property="og:description" content="Same code, same test. The only thing different was the timezone the two machines were running in.">
+  <meta property="og:url" content="https://jeffthoensen.com/blog/test-that-only-failed-in-ci/">
+  <meta property="og:site_name" content="Jeff Thoensen">
+  <meta property="og:image" content="https://jeffthoensen.com/og-testing.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Test That Only Failed in CI, Never Locally · Jeff Thoensen">
+  <meta name="twitter:description" content="Same code, same test. The only thing different was the timezone the two machines were running in.">
+  <meta name="twitter:image" content="https://jeffthoensen.com/og-testing.png">
+
+  <style>
+    body { max-width: 720px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #eaeaea; background:#111; }
+    a { color:#4ea3ff; }
+    h1 { line-height:1.2; margin: 0 0 1rem; }
+    .meta { color:#aaa; margin-bottom:1.5rem; }
+    footer { margin-top:2rem; border-top:1px solid #333; padding-top:1rem; }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://jeffthoensen.com/#jeff",
+        "name": "Jeff Thoensen",
+        "url": "https://jeffthoensen.com/",
+        "image": "https://jeffthoensen.com/profile-pic.jpg",
+        "jobTitle": "Automation Engineer",
+        "sameAs": [
+          "https://bsky.app/profile/jeffthoensen.bsky.social",
+          "https://www.youtube.com/@Jeff-Thoensen",
+          "https://www.linkedin.com/in/jeffthoensen/",
+          "https://github.com/jeffthoensen",
+          "https://dev.to/jeffthoensen",
+          "https://jeff-thoensen.medium.com",
+          "https://jeffthoensen.substack.com",
+          "https://hashnode.com/@jeffthoensen",
+          "https://x.com/jeffthoensen",
+          "https://www.kaggle.com/jeffthoensen",
+          "https://wellfound.com/u/jeff-thoensen",
+          "https://peerlist.io/jeffthoensen",
+          "https://www.crunchbase.com/person/jeff-thoensen-02b2",
+          "https://www.producthunt.com/@jeffthoensen",
+          "https://jeffthoensen.notion.site/"
+        ]
+      },
+      {
+        "@type": "Article",
+        "headline": "The Test That Only Failed in CI, Never Locally",
+        "author": { "@id": "https://jeffthoensen.com/#jeff" },
+        "datePublished": "2026-07-25",
+        "dateModified": "2026-07-25",
+        "mainEntityOfPage": "https://jeffthoensen.com/blog/test-that-only-failed-in-ci/",
+        "publisher": { "@id": "https://jeffthoensen.com/#jeff" },
+        "image": "https://jeffthoensen.com/og-testing.png",
+        "description": "Same code, same test. The only thing different was the timezone the two machines were running in."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="/">← Home</a>
+  <h1>The Test That Only Failed in CI, Never Locally</h1>
+  <div class="meta">by Jeff Thoensen</div>
+
+  <p>A test checking that a scheduled reminder appeared on the right day passed every time I ran it on my machine and failed every time it ran in CI, with nothing about the code or the test itself different between the two runs. The only thing that was different was the timezone the two machines were running in.</p>
+
+  <p>My machine was set to Eastern time, during the part of the year when Eastern runs four hours behind UTC. The CI runner ran in UTC. The test scheduled a reminder for 11 PM on a given day and checked that it showed up under that same calendar date. At 11 PM Eastern, the date comparison ran fine, because the reminder and the check were both being read in the same local time. Four hours ahead in UTC, 11 PM Eastern is already 3 AM the next day, so the reminder that should have shown up "today" was landing on tomorrow instead, and the test correctly failed against a real bug in how the date was being compared.</p>
+
+  <p>The bug lived in the feature: the reminder was meant to fire at one specific scheduled instant, not sometime across the user's local calendar day, so comparing it against "today" only makes sense once both sides are read in the same timezone. Comparing a reminder's timestamp against today without ever converting both to a common timezone first happens to work by accident whenever the two machines involved share the same offset from UTC, and stops working the moment they don't.</p>
+
+  <p>I fixed the comparison by converting both sides to UTC before comparing, since the reminder represents one fixed instant rather than a day tied to whoever happens to be looking at it. If the feature had actually meant "today on the user's own calendar," converting to UTC would have been the wrong fix, since two users in different timezones can disagree about what day a given instant falls on, and the right move there would have been converting both sides into the user's local timezone instead. Getting that distinction right mattered more than which timezone I ended up picking.</p>
+
+  <p>I also set CI to run in a timezone deliberately different from wherever tests get run manually, so a mismatch like this fails immediately instead of waiting for whichever engineer's laptop happens to be in a different zone than the pipeline.</p>
+
+  <p>The habit worth keeping from this: any test involving dates is also, whether anyone intended it or not, a test of timezone handling. Code that only works because two clocks happen to agree is running on coincidence, and the only way to find that out before a user does is making sure your test environment doesn't coincidentally match your dev machine's timezone.</p>
+
+  <footer>
+    <strong>Connect with me</strong>:
+    <a href="https://jeffthoensen.com">jeffthoensen.com</a> ·
+    <a href="https://github.com/jeffthoensen">GitHub</a> ·
+    <a href="https://www.linkedin.com/in/jeffthoensen/">LinkedIn</a>
+  </footer>
+</body>
+</html>

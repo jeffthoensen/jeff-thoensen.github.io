@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>When the Mock Is Right and the API Isn't Anymore · Jeff Thoensen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A mocked test suite passed every run for months. The real API's response contract had changed, and nothing caught it.">
+
+  <link rel="canonical" href="https://jeffthoensen.com/blog/when-the-mock-is-right-and-the-api-isnt/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="When the Mock Is Right and the API Isn't Anymore · Jeff Thoensen">
+  <meta property="og:description" content="A mocked test suite passed every run for months. The real API's response contract had changed, and nothing caught it.">
+  <meta property="og:url" content="https://jeffthoensen.com/blog/when-the-mock-is-right-and-the-api-isnt/">
+  <meta property="og:site_name" content="Jeff Thoensen">
+  <meta property="og:image" content="https://jeffthoensen.com/og-testing.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="When the Mock Is Right and the API Isn't Anymore · Jeff Thoensen">
+  <meta name="twitter:description" content="A mocked test suite passed every run for months. The real API's response contract had changed, and nothing caught it.">
+  <meta name="twitter:image" content="https://jeffthoensen.com/og-testing.png">
+
+  <style>
+    body { max-width: 720px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #eaeaea; background:#111; }
+    a { color:#4ea3ff; }
+    h1 { line-height:1.2; margin: 0 0 1rem; }
+    .meta { color:#aaa; margin-bottom:1.5rem; }
+    footer { margin-top:2rem; border-top:1px solid #333; padding-top:1rem; }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://jeffthoensen.com/#jeff",
+        "name": "Jeff Thoensen",
+        "url": "https://jeffthoensen.com/",
+        "image": "https://jeffthoensen.com/profile-pic.jpg",
+        "jobTitle": "Automation Engineer",
+        "sameAs": [
+          "https://bsky.app/profile/jeffthoensen.bsky.social",
+          "https://www.youtube.com/@Jeff-Thoensen",
+          "https://www.linkedin.com/in/jeffthoensen/",
+          "https://github.com/jeffthoensen",
+          "https://dev.to/jeffthoensen",
+          "https://jeff-thoensen.medium.com",
+          "https://jeffthoensen.substack.com",
+          "https://hashnode.com/@jeffthoensen",
+          "https://x.com/jeffthoensen",
+          "https://www.kaggle.com/jeffthoensen",
+          "https://wellfound.com/u/jeff-thoensen",
+          "https://peerlist.io/jeffthoensen",
+          "https://www.crunchbase.com/person/jeff-thoensen-02b2",
+          "https://www.producthunt.com/@jeffthoensen",
+          "https://jeffthoensen.notion.site/"
+        ]
+      },
+      {
+        "@type": "Article",
+        "headline": "When the Mock Is Right and the API Isn't Anymore",
+        "author": { "@id": "https://jeffthoensen.com/#jeff" },
+        "datePublished": "2026-07-25",
+        "dateModified": "2026-07-25",
+        "mainEntityOfPage": "https://jeffthoensen.com/blog/when-the-mock-is-right-and-the-api-isnt/",
+        "publisher": { "@id": "https://jeffthoensen.com/#jeff" },
+        "image": "https://jeffthoensen.com/og-testing.png",
+        "description": "A mocked test suite passed every run for months. The real API's response contract had changed, and nothing caught it."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="/">← Home</a>
+  <h1>When the Mock Is Right and the API Isn't Anymore</h1>
+  <div class="meta">by Jeff Thoensen</div>
+
+  <p>A test suite built against a mock API passed every run for months. The real endpoint's response contract had changed in that time, but the mock hadn't, and nothing caught it because the tests only ever talked to the mock.</p>
+
+  <p>The mock returned a <code>users</code> array with <code>name</code> and <code>email</code> on each object. That was accurate when I built the mock, matching the real API's response at the time. Sometime after that, the backend team added a <code>status</code> field and split <code>name</code> into <code>firstName</code> and <code>lastName</code>. The integration hadn't been exercised against the real API since that change went out, so my test suite kept asserting against a version of the response that no longer existed anywhere but in my mock file.</p>
+
+  <p>The suite caught nothing, because nothing about it was ever wrong. It was internally consistent: the mock returned the old shape, and the tests checked for the old shape. It stayed green the whole time, testing against a contract that had already changed underneath it.</p>
+
+  <p>I added a separate, small set of contract tests that hit the real API directly, on a schedule instead of every commit, and assert that the fields and types the application depends on are still present, rather than asserting on the specific data returned. That suite is slower and talks to a real backend, which is exactly why it isn't run on every push. Its only job is catching the moment a mock and reality drift apart, which the fast mocked suite structurally cannot do.</p>
+
+  <p>The mock is still worth having. It's fast, and it isolates frontend logic from backend uptime, which is most of why teams reach for mocking a CRM integration in the first place. What changed is treating the mock as something that needs its own maintenance, tied to the real contract, instead of something written once during initial development and trusted indefinitely afterward.</p>
+
+  <footer>
+    <strong>Connect with me</strong>:
+    <a href="https://jeffthoensen.com">jeffthoensen.com</a> ·
+    <a href="https://github.com/jeffthoensen">GitHub</a> ·
+    <a href="https://www.linkedin.com/in/jeffthoensen/">LinkedIn</a>
+  </footer>
+</body>
+</html>
