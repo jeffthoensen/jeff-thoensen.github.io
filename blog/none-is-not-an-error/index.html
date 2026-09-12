@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>None Is Not an Error · Jeff Thoensen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="search_player_id used to print a message and return None. Testing that meant checking two different things instead of one.">
+
+  <link rel="canonical" href="https://jeffthoensen.com/blog/none-is-not-an-error/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="None Is Not an Error · Jeff Thoensen">
+  <meta property="og:description" content="search_player_id used to print a message and return None. Testing that meant checking two different things instead of one.">
+  <meta property="og:url" content="https://jeffthoensen.com/blog/none-is-not-an-error/">
+  <meta property="og:site_name" content="Jeff Thoensen">
+  <meta property="og:image" content="https://jeffthoensen.com/og-testing.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="None Is Not an Error · Jeff Thoensen">
+  <meta name="twitter:description" content="search_player_id used to print a message and return None. Testing that meant checking two different things instead of one.">
+  <meta name="twitter:image" content="https://jeffthoensen.com/og-testing.png">
+
+  <style>
+    body { max-width: 720px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #eaeaea; background:#111; }
+    a { color:#4ea3ff; }
+    h1 { line-height:1.2; margin: 0 0 1rem; }
+    .meta { color:#aaa; margin-bottom:1.5rem; }
+    footer { margin-top:2rem; border-top:1px solid #333; padding-top:1rem; }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://jeffthoensen.com/#jeff",
+        "name": "Jeff Thoensen",
+        "url": "https://jeffthoensen.com/",
+        "image": "https://jeffthoensen.com/profile-pic.jpg",
+        "jobTitle": "Senior QA Engineer",
+        "sameAs": [
+          "https://bsky.app/profile/jeffthoensen.bsky.social",
+          "https://www.youtube.com/@Jeff-Thoensen",
+          "https://www.linkedin.com/in/jeffthoensen/",
+          "https://github.com/jeffthoensen",
+          "https://dev.to/jeffthoensen",
+          "https://jeff-thoensen.medium.com",
+          "https://jeffthoensen.substack.com",
+          "https://hashnode.com/@jeffthoensen",
+          "https://x.com/jeffthoensen",
+          "https://www.kaggle.com/jeffthoensen",
+          "https://wellfound.com/u/jeff-thoensen",
+          "https://peerlist.io/jeffthoensen",
+          "https://www.crunchbase.com/person/jeff-thoensen-02b2",
+          "https://www.producthunt.com/@jeffthoensen",
+          "https://jeffthoensen.notion.site/"
+        ]
+      },
+      {
+        "@type": "Article",
+        "headline": "None Is Not an Error",
+        "author": { "@id": "https://jeffthoensen.com/#jeff" },
+        "datePublished": "2026-09-12",
+        "dateModified": "2026-09-12",
+        "mainEntityOfPage": "https://jeffthoensen.com/blog/none-is-not-an-error/",
+        "publisher": { "@id": "https://jeffthoensen.com/#jeff" },
+        "image": "https://jeffthoensen.com/og-testing.png",
+        "description": "search_player_id used to print a message and return None. Testing that meant checking two different things instead of one."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="/">← Home</a>
+  <h1>None Is Not an Error</h1>
+  <div class="meta">by Jeff Thoensen</div>
+
+  <p>The lookup used to fail quietly. If the MLB API had no player matching a name, <code>search_player_id</code> printed "Player not found." and returned None, and the caller was responsible for noticing the None and stopping. Forget that check anywhere in the chain, and None keeps traveling into the next function that expected a real player ID.</p>
+
+  <p>Testing that old version meant capturing whatever got printed to stdout and asserting on the message, then separately checking that the return value was None. Replacing the print-and-return-None pattern with a real exception, <code>PlayerLookupError</code>, meant one assertion covers it: <code>pytest.raises(PlayerLookupError)</code> either happens or it doesn't, with nothing else to check.</p>
+
+  <p>The exception also fixed a case the print statement couldn't. The function that decides between pitching and hitting stats used to return <code>(None, None)</code> when a player had a season with no usable stats, the same shape the caller was already checking for a missing player entirely, so both very different problems ended up as the same "something is None, give up" check. Raising <code>PlayerLookupError</code> with an actual message, "No usable stats available for 2025" versus "No player found matching...", means the two failures look different from the moment they happen, instead of only being distinguishable by whichever print statement ran first.</p>
+
+  <p>Adding argparse alongside the exceptions mattered for a related reason. Running the script with a name as an argument, instead of only through the interactive prompt, meant tests could call the lookup function directly with a name and a mocked response, instead of needing to fake stdin to drive the interactive version.</p>
+
+  <footer>
+    <strong>Connect with me</strong>:
+    <a href="https://jeffthoensen.com">jeffthoensen.com</a> ·
+    <a href="https://github.com/jeffthoensen">GitHub</a> ·
+    <a href="https://www.linkedin.com/in/jeffthoensen/">LinkedIn</a>
+  </footer>
+</body>
+</html>
