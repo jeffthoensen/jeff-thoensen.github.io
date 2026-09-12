@@ -77,7 +77,7 @@
   <h1>None Is Not an Error</h1>
   <div class="meta">by Jeff Thoensen</div>
 
-  <p>The lookup used to fail without ever raising anything. If the MLB API had no player matching a name, <code>search_player_id</code> printed "Player not found." and returned None, and it was on whoever called it to check for that and stop. Forget that check anywhere in the chain, and None keeps traveling into the next function that expected a real player ID.</p>
+  <p>The lookup used to fail without ever raising anything. If the MLB API had no player matching a name, <code>search_player_id</code> printed "Player not found." and returned None, and it was on whoever called it to check for that and stop. If that check gets missed anywhere in the chain, None gets passed into the next function that expected a real player ID.</p>
 
   <p>Testing that old version meant capturing whatever got printed to stdout and asserting on the message, then separately checking that the return value was None. Replacing the print-and-return-None pattern with a real exception, <code>PlayerLookupError</code>, meant one assertion covers it: <code>pytest.raises(PlayerLookupError)</code> either happens or it doesn't, with nothing else to check.</p>
 
