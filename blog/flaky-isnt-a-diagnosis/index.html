@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Flaky Isn't a Diagnosis · Jeff Thoensen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A test that fails once and a test that fails constantly look identical from a single CI run. Only one of them is actually flaky.">
+
+  <link rel="canonical" href="https://jeffthoensen.com/blog/flaky-isnt-a-diagnosis/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Flaky Isn't a Diagnosis · Jeff Thoensen">
+  <meta property="og:description" content="A test that fails once and a test that fails constantly look identical from a single CI run. Only one of them is actually flaky.">
+  <meta property="og:url" content="https://jeffthoensen.com/blog/flaky-isnt-a-diagnosis/">
+  <meta property="og:site_name" content="Jeff Thoensen">
+  <meta property="og:image" content="https://jeffthoensen.com/og-testing.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Flaky Isn't a Diagnosis · Jeff Thoensen">
+  <meta name="twitter:description" content="A test that fails once and a test that fails constantly look identical from a single CI run. Only one of them is actually flaky.">
+  <meta name="twitter:image" content="https://jeffthoensen.com/og-testing.png">
+
+  <style>
+    body { max-width: 720px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #eaeaea; background:#111; }
+    a { color:#4ea3ff; }
+    h1 { line-height:1.2; margin: 0 0 1rem; }
+    .meta { color:#aaa; margin-bottom:1.5rem; }
+    footer { margin-top:2rem; border-top:1px solid #333; padding-top:1rem; }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://jeffthoensen.com/#jeff",
+        "name": "Jeff Thoensen",
+        "url": "https://jeffthoensen.com/",
+        "image": "https://jeffthoensen.com/profile-pic.jpg",
+        "jobTitle": "Automation Engineer",
+        "sameAs": [
+          "https://bsky.app/profile/jeffthoensen.bsky.social",
+          "https://www.youtube.com/@Jeff-Thoensen",
+          "https://www.linkedin.com/in/jeffthoensen/",
+          "https://github.com/jeffthoensen",
+          "https://dev.to/jeffthoensen",
+          "https://jeff-thoensen.medium.com",
+          "https://jeffthoensen.substack.com",
+          "https://hashnode.com/@jeffthoensen",
+          "https://x.com/jeffthoensen",
+          "https://www.kaggle.com/jeffthoensen",
+          "https://wellfound.com/u/jeff-thoensen",
+          "https://peerlist.io/jeffthoensen",
+          "https://www.crunchbase.com/person/jeff-thoensen-02b2",
+          "https://www.producthunt.com/@jeffthoensen",
+          "https://jeffthoensen.notion.site/"
+        ]
+      },
+      {
+        "@type": "Article",
+        "headline": "Flaky Isn't a Diagnosis",
+        "author": { "@id": "https://jeffthoensen.com/#jeff" },
+        "datePublished": "2026-09-12",
+        "dateModified": "2026-09-12",
+        "mainEntityOfPage": "https://jeffthoensen.com/blog/flaky-isnt-a-diagnosis/",
+        "publisher": { "@id": "https://jeffthoensen.com/#jeff" },
+        "image": "https://jeffthoensen.com/og-testing.png",
+        "description": "A test that fails once and a test that fails constantly look identical from a single CI run. Only one of them is actually flaky."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="/">← Home</a>
+  <h1>Flaky Isn't a Diagnosis</h1>
+  <div class="meta">by Jeff Thoensen</div>
+
+  <p>A test fails, someone reruns it, it passes, and the failure gets filed under "flaky" without anyone checking whether that's true, even though a test that fails one run in twenty and a test that fails one run in three get treated exactly the same once both carry that label, quarantined and ignored, and they're completely different problems.</p>
+
+  <p>I wrote a small tool that runs a pytest suite a set number of times and classifies each test by its actual pass rate: stable if it passed every run, consistently failing if it failed every run, and flaky only if the result varied between runs. Putting a test that fails every time in the same bucket as one that fails occasionally buries an actual bug under a label that tells the team to ignore it.</p>
+
+  <p>The demo makes the difference pretty obvious. Two Playwright tests hit a page where an element appears after a random delay between 0 and 100 milliseconds. One waits for the element itself and passes every time, because it's checking for the actual condition instead of guessing at when it'll be ready. The other waits a fixed 50 milliseconds and then checks, which works whenever the random delay happens to land under 50ms and fails whenever it doesn't. Running that second test 15 times produced 10 passes and 5 failures. That gives you a measurable failure rate instead of just calling it flaky.</p>
+
+  <p>A single CI run only tells you pass or fail. Fifteen runs tell you the odds. Those odds matter when you're deciding whether a test is safe to gate a deploy on. A test failing a third of the time is broken and shouldn't be trusted with anything. A test failing one run in twenty might be worth a look when someone has time, but it isn't the same emergency.</p>
+
+  <p>Once you have that number, you can make a better call on a red build: fix it, quarantine it with a known failure rate attached, or admit the test caught a real bug and go find it. The tool is on <a href="https://github.com/jeffthoensen/flaky-test-detector">GitHub</a>, along with unit tests for the classification logic itself.</p>
+
+  <footer>
+    <strong>Connect with me</strong>:
+    <a href="https://jeffthoensen.com">jeffthoensen.com</a> ·
+    <a href="https://github.com/jeffthoensen">GitHub</a> ·
+    <a href="https://www.linkedin.com/in/jeffthoensen/">LinkedIn</a>
+  </footer>
+</body>
+</html>
