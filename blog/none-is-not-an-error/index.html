@@ -77,13 +77,13 @@
   <h1>None Is Not an Error</h1>
   <div class="meta">by Jeff Thoensen</div>
 
-  <p>The lookup used to fail without ever raising anything. If the MLB API had no player matching a name, <code>search_player_id</code> printed "Player not found." and returned None, and the caller was responsible for noticing the None and stopping. Forget that check anywhere in the chain, and None keeps traveling into the next function that expected a real player ID.</p>
+  <p>The lookup used to fail without ever raising anything. If the MLB API had no player matching a name, <code>search_player_id</code> printed "Player not found." and returned None, and it was on whoever called it to check for that and stop. Forget that check anywhere in the chain, and None keeps traveling into the next function that expected a real player ID.</p>
 
   <p>Testing that old version meant capturing whatever got printed to stdout and asserting on the message, then separately checking that the return value was None. Replacing the print-and-return-None pattern with a real exception, <code>PlayerLookupError</code>, meant one assertion covers it: <code>pytest.raises(PlayerLookupError)</code> either happens or it doesn't, with nothing else to check.</p>
 
-  <p>The exception also fixed a case the print statement couldn't. The function that decides between pitching and hitting stats used to return <code>(None, None)</code> when a player had a season with no usable stats, the same shape the caller was already checking for a missing player entirely, so both very different problems ended up as the same "something is None, give up" check. Raising <code>PlayerLookupError</code> with an actual message, "No usable stats available for 2025" versus "No player found matching...", means the two failures look different from the moment they happen, instead of only being distinguishable by whichever print statement ran first.</p>
+  <p>The function that decides between pitching and hitting stats used to return <code>(None, None)</code> when a player had a season with no usable stats, the same shape the caller was already checking for a missing player entirely, so both very different problems ended up as the same "something is None, give up" check. Raising <code>PlayerLookupError</code> with an actual message, "No usable stats available for 2025" versus "No player found matching...", means you don't have to guess which one happened.</p>
 
-  <p>Adding argparse alongside the exceptions mattered for a related reason. Running the script with a name as an argument, instead of only through the interactive prompt, meant tests could call the lookup function directly with a name and a mocked response, instead of needing to fake stdin to drive the interactive version.</p>
+  <p>Running the script with a name as an argument, instead of only through the interactive prompt, meant tests could call the lookup function directly with a name and a mocked response, instead of needing to fake stdin to drive the interactive version.</p>
 
   <footer>
     <strong>Connect with me</strong>:
