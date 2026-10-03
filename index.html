@@ -17,13 +17,13 @@
   <meta property="og:title" content="Jeff Thoensen · Senior QA Engineer">
   <meta property="og:description" content="Automation, tooling, and AI-assisted systems that keep releases stable.">
   <meta property="og:url" content="https://jeffthoensen.com/">
-  <meta property="og:image" content="https://jeffthoensen.com/profile-pic.jpg">
+  <meta property="og:image" content="https://jeffthoensen.com/jeff-thoensen.jpg">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Jeff Thoensen · Senior QA Engineer">
   <meta name="twitter:description" content="Automation, tooling, and AI-assisted systems that keep releases stable.">
-  <meta name="twitter:image" content="https://jeffthoensen.com/profile-pic.jpg">
+  <meta name="twitter:image" content="https://jeffthoensen.com/jeff-thoensen.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -142,6 +142,8 @@
 
     .post-link:hover { border-color: var(--accent); }
 
+    .post-link + .post-link { margin-top: 0.75rem; }
+
     .post-title {
       display: block;
       font-family: 'Fraunces', serif;
@@ -181,7 +183,7 @@
     "name": "Jeff Thoensen",
     "description": "Senior QA Engineer focused on test automation, tooling, and AI-assisted systems for stable software releases.",
     "url": "https://jeffthoensen.com/",
-    "image": "https://jeffthoensen.com/profile-pic.jpg",
+    "image": "https://jeffthoensen.com/jeff-thoensen.jpg",
     "jobTitle": "Senior QA Engineer",
     "sameAs": [
       "https://bsky.app/profile/jeffthoensen.bsky.social",
@@ -222,7 +224,7 @@
     </nav>
 
     <div class="hero">
-      <img src="profile-pic.jpg" alt="Jeff Thoensen" class="avatar">
+      <img src="jeff-thoensen.jpg" alt="Jeff Thoensen" class="avatar">
       <div>
         <p class="eyebrow">Senior QA Engineer</p>
         <h1>Jeff Thoensen</h1>
@@ -237,6 +239,14 @@
       <a class="post-link" href="/blog/none-is-not-an-error/">
         <span class="post-title">None Is Not an Error</span>
         <span class="post-desc">search_player_id used to print a message and return None. Testing that meant checking two different things instead of one.</span>
+      </a>
+      <a class="post-link" href="/blog/flaky-isnt-a-diagnosis/">
+        <span class="post-title">Flaky Isn't a Diagnosis</span>
+        <span class="post-desc">A test that fails once and a test that fails constantly look identical from a single CI run. Only one of them is actually flaky.</span>
+      </a>
+      <a class="post-link" href="/blog/when-the-mock-is-right-and-the-api-isnt/">
+        <span class="post-title">When the Mock Is Right and the API Isn't Anymore</span>
+        <span class="post-desc">A mocked test suite passed every run for months. The real API's response contract had changed, and nothing caught it.</span>
       </a>
     </section>
 
